@@ -40,15 +40,27 @@
         class="search-input"
       ></v-autocomplete>
       <v-spacer v-if="!isMobile"></v-spacer>
-      <v-btn v-if="!isMobile" class="ma-2" outlined rounded color="yt_blue"
-        ><v-icon>mdi-account-circle-outline</v-icon
-        ><span class="ml-2">Fazer login</span>
-      </v-btn>
+      <div v-if="!isMobile">
+        <v-btn v-if="!$store.state.isAuthorized" class="ma-2" outlined rounded color="yt_blue" @click="handleAuthClick"
+          ><v-icon>mdi-account-circle-outline</v-icon
+          ><span class="ml-2">Fazer login</span>
+        </v-btn>
+        <v-btn v-else class="ma-2" outlined rounded color="yt_blue" @click="revokeAccess"
+          >
+          <v-img :src="$store.state.user.UO" :alt="$store.state.user.yf" class="user-img"></v-img>
+          <span class="ml-2">Deslogar</span>
+        </v-btn>
+      </div>
     </v-app-bar>
   </div>
 </template>
 
 <script>
+import {
+  handleClientLoad,
+  handleAuthClick,
+  revokeAccess,
+} from "@/utils/o-auth";
 import { mapActions } from "vuex";
 export default {
   name: "Header",
@@ -80,8 +92,11 @@ export default {
   mounted() {
     const history = [];
     this.items = history.concat(this.$store.state.searchHistory);
+    handleClientLoad();
   },
   methods: {
+    handleAuthClick,
+    revokeAccess,
     ...mapActions(["setSearch", "setSearchHistory", "setTitlePage"]),
     goToHome() {
       if (this.$route.name != "Home") {
@@ -128,6 +143,11 @@ export default {
 <style lang="scss" scoped>
 .logo {
   cursor: pointer;
+}
+.user-img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
 }
 @media screen and (max-width: 400px) {
   .search-input {

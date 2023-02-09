@@ -34,6 +34,12 @@ const routes = [
           import(/* webpackChunkName: "home" */ "../views/History.vue"),
       },
       {
+        path: "/upload",
+        name: "VideosInsert",
+        component: () =>
+          import(/* webpackChunkName: "home" */ "../views/VideosInsert.vue"),
+      },
+      {
         path: "*",
         name: "NotFound",
         component: () =>

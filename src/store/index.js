@@ -11,7 +11,9 @@ export default new Vuex.Store({
     searchHistory: Vue.$cookies.get('searchHistory') != undefined ? Vue.$cookies.get('searchHistory') : [],
     watchedVideos: Vue.$cookies.get('history') != undefined ? Vue.$cookies.get('history') : [],
     title: 'Youtube',
-    isMobile: false
+    isMobile: false,
+    isAuthorized: false,
+    user: {}
   },
   mutations: {
     SET_SEARCH_PARAMS(state, value) {
@@ -33,6 +35,12 @@ export default new Vuex.Store({
     SET_TITLE(state, value) {
       state.title = value
       document.title = state.title
+    },
+    SET_IS_AUTHORIZED(state, value) {
+      state.isAuthorized = value
+    },
+    SET_USER(state, value) {
+      state.user = value
     }
   },
   actions: {
@@ -50,6 +58,12 @@ export default new Vuex.Store({
     },
     setTitlePage({commit}, value) {
       commit('SET_TITLE', value)
+    },
+    setAuthorization({commit}, value) {
+      commit('SET_IS_AUTHORIZED', value)
+    },
+    setUserInfo({commit}, value) {
+      commit('SET_USER', value)
     }
   },
   modules: {
