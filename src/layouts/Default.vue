@@ -12,33 +12,33 @@
 </template>
 
 <script>
-import Header from "../layouts/Header.vue";
-import SideBarNavegation from "../layouts/SideBarNavegation.vue";
-import BottomBarNavegation from "../layouts/BottomBarNavegation.vue";
-import { mapActions } from "vuex";
+import Header from '../layouts/Header.vue';
+import SideBarNavegation from '../layouts/SideBarNavegation.vue';
+import BottomBarNavegation from '../layouts/BottomBarNavegation.vue';
+import { mapActions } from 'vuex';
 export default {
-  components: { Header, SideBarNavegation, BottomBarNavegation },
-  name: "Default",
-  data() {
-    return {
-      sidebar: false,
-      isMobile: false,
-    };
-  },
-  mounted() {
-    this.checkIsMobile();
-  },
-  methods: {
-    ...mapActions(["setIsMobile"]),
-    checkIsMobile() {
-      window.addEventListener("resize", () => {
-        this.isMobile = window.innerWidth <= 768;
-        this.setIsMobile(this.isMobile)
-      });
-      this.isMobile = window.innerWidth <= 768;
-      this.setIsMobile(this.isMobile)
+    components: { Header, SideBarNavegation, BottomBarNavegation },
+    name: 'Default',
+    data() {
+        return {
+            sidebar: false,
+            isMobile: false,
+        };
     },
-  },
+    mounted() {
+        this.checkIsMobile();
+    },
+    methods: {
+        ...mapActions(['setIsMobile']),
+        checkIsMobile() {
+            window.addEventListener('resize', () => {
+                this.isMobile = window.innerWidth <= 768;
+                this.setIsMobile(this.isMobile)
+            });
+            this.isMobile = window.innerWidth <= 768;
+            this.setIsMobile(this.isMobile)
+        },
+    },
 };
 </script>
 

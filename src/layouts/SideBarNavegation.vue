@@ -32,38 +32,38 @@
 
 <script>
 export default {
-  name: "SideBarNavegation",
-  props: {
-    sidebar: {
-      type: Boolean,
-      required: true
+    name: 'SideBarNavegation',
+    props: {
+        sidebar: {
+            type: Boolean,
+            required: true
+        },
     },
-  },
-  data() {
-    return {
-      drawer: true,
-      items: [
-        { title: "Home", icon: "mdi-home", route: "Home" },
-        { title: "Histórico", icon: "mdi-history", route: "History" },
-      ],
-      mini: true,
-    };
-  },
-  watch: {
-    sidebar() {
-      this.mini = !this.mini
-    }
-  },
-  methods: {
-    goTo(route) {
-      if (this.$route.name != route) {
-        this.$router.push({ name: route });
-      }
+    data() {
+        return {
+            drawer: true,
+            items: [
+                { title: 'Home', icon: 'mdi-home', route: 'Home' },
+                { title: 'Histórico', icon: 'mdi-history', route: 'History' },
+            ],
+            mini: true,
+        };
     },
-    checkRoute(name) {
-      return name == this.$route.name ? "yt_black" : "yt_gray";
+    watch: {
+        sidebar() {
+            this.mini = !this.mini
+        }
     },
-  },
+    methods: {
+        goTo(route) {
+            if (this.$route.name != route) {
+                this.$router.push({ name: route });
+            }
+        },
+        checkRoute(name) {
+            return name == this.$route.name ? 'yt_black' : 'yt_gray';
+        },
+    },
 };
 </script>
 <style lang="scss" scoped>

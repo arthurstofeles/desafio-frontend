@@ -47,31 +47,31 @@
 </template>
 
 <script>
-import { formatCountSubscribed } from "@/utils/filters.js";
+import { formatCountSubscribed } from '@/utils/filters.js';
 export default {
-  name: "VideoPlayer",
-  props: {
-    video: Object,
-  },
-  data() {
-    return {
-      readMoreActivated: false,
-    };
-  },
-  methods: {
-    formatCountSubscribed,
-  },
-  computed: {
-    description() {
-      return this.video.snippet.description.replaceAll("\n", "<br />");
+    name: 'VideoPlayer',
+    props: {
+        video: Object,
     },
-    videoPath() {
-      return `https://www.youtube.com/embed/${this.video.id}?autoplay=1&showinfo=1&mute=0`;
+    data() {
+        return {
+            readMoreActivated: false,
+        };
     },
-    isMobile() {
-      return this.$store.state.isMobile;
+    methods: {
+        formatCountSubscribed,
     },
-  },
+    computed: {
+        description() {
+            return this.video.snippet.description.replaceAll('\n', '<br />');
+        },
+        videoPath() {
+            return `https://www.youtube.com/embed/${this.video.id}?autoplay=1&showinfo=1&mute=0`;
+        },
+        isMobile() {
+            return this.$store.state.isMobile;
+        },
+    },
 };
 </script>
 

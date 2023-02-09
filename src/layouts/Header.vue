@@ -57,86 +57,90 @@
 
 <script>
 import {
-  handleClientLoad,
-  handleAuthClick,
-  revokeAccess,
-} from "@/utils/o-auth";
-import { mapActions } from "vuex";
-export default {
-  name: "Header",
-  data() {
-    return {
-      items: [],
-      selected: "",
-      search: "",
-      loading: false,
-    };
-  },
-  props: {
-    isMobile: {
-      type: Boolean,
-    },
-  },
-  watch: {
-    search() {
-      if (this.search != "") {
-        this.items.unshift(this.search);
-      }
-    },
-    query() {
-      if (!this.$route.query.search_query) {
-        this.selected = "";
-      }
-    },
-  },
-  mounted() {
-    const history = [];
-    this.items = history.concat(this.$store.state.searchHistory);
-    handleClientLoad();
-  },
-  methods: {
+    handleClientLoad,
     handleAuthClick,
     revokeAccess,
-    ...mapActions(["setSearch", "setSearchHistory", "setTitlePage"]),
-    goToHome() {
-      if (this.$route.name != "Home") {
-        this.$router.push({
-          name: "Home",
-          query: { search_query: this.select },
-        });
-      }
+} from '@/utils/o-auth';
+import { mapActions } from 'vuex';
+export default {
+    name: 'Header',
+    data() {
+        return {
+            items: [],
+            selected: '',
+            search: '',
+            loading: false,
+        };
     },
-    clearSearch() {
-      const history = [];
-      this.items = history.concat(this.$store.state.searchHistory);
+    props: {
+        isMobile: {
+            type: Boolean,
+        },
     },
-    goToResults() {
-      if (this.selected != null) {
-        this.setSearch(this.selected);
-        this.setTitlePage(this.selected + " - YouTube");
-        if (
-          this.selected !=
+    watch: {
+        search() {
+            if (this.search != '') {
+                this.items.unshift(this.search);
+            }
+        },
+        query() {
+            // eslint-disable-next-line
+            if (!this.$route.query.search_query) {
+                this.selected = '';
+            }
+        },
+    },
+    mounted() {
+        const history = [];
+        this.items = history.concat(this.$store.state.searchHistory);
+        handleClientLoad();
+    },
+    methods: {
+        handleAuthClick,
+        revokeAccess,
+        ...mapActions(['setSearch', 'setSearchHistory', 'setTitlePage']),
+        goToHome() {
+            if (this.$route.name != 'Home') {
+                this.$router.push({
+                    name: 'Home',
+                    // eslint-disable-next-line
+                    query: { search_query: this.select },
+                });
+            }
+        },
+        clearSearch() {
+            const history = [];
+            this.items = history.concat(this.$store.state.searchHistory);
+        },
+        goToResults() {
+            if (this.selected != null) {
+                this.setSearch(this.selected);
+                this.setTitlePage(this.selected + ' - YouTube');
+                if (
+                    this.selected !=
           this.$store.state.searchHistory.find(
-            (element) => element === this.selected
+              (element) => element === this.selected
           )
-        ) {
-          this.setSearchHistory(this.selected);
-        }
-        this.items.unshift(this.selected);
-        if (this.$router.name != "SearchResult") {
-          this.$router.push({
-            name: "SearchResult",
-            query: { search_query: this.$store.state.search },
-          });
-        }
-      }
+                ) {
+                    this.setSearchHistory(this.selected);
+                }
+                this.items.unshift(this.selected);
+                if (this.$router.name != 'SearchResult') {
+                    this.$router.push({
+                        name: 'SearchResult',
+                        // eslint-disable-next-line
+                        query: { search_query: this.$store.state.search },
+                    });
+                }
+            }
+        },
     },
-  },
-  computed: {
-    query() {
-      return this.$route.query.search_query;
+    computed: {
+        query() {
+            // eslint-disable-next-line
+            return this.$route.query.search_query;
+        },
     },
-  },
 };
 </script>
 

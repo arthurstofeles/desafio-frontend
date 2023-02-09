@@ -62,106 +62,106 @@
 </template>
 
 <script>
-import Loading from "@/components/Loading.vue";
-import ErrorMessage from "@/components/ErrorMessage.vue";
-import VideoMobileVideoThumbnail from "@/components/VideoMobileVideoThumbnail.vue";
-import VideoThumbnail from "@/components/VideoThumbnail.vue";
+import Loading from '@/components/Loading.vue';
+import ErrorMessage from '@/components/ErrorMessage.vue';
+import VideoMobileVideoThumbnail from '@/components/VideoMobileVideoThumbnail.vue';
+import VideoThumbnail from '@/components/VideoThumbnail.vue';
 import {
-  listVideos,
-  listChannels,
-  listVideoCategories,
-  listVideosByCategories,
-} from "@/services/youtube-api.js";
-import { mapActions } from "vuex";
+    listVideos,
+    listChannels,
+    listVideoCategories,
+    listVideosByCategories,
+} from '@/services/youtube-api.js';
+import { mapActions } from 'vuex';
 export default {
-  name: "Home",
-  components: {
-    VideoThumbnail,
-    VideoMobileVideoThumbnail,
-    ErrorMessage,
-    Loading,
-  },
-  data() {
-    return {
-      videos: [],
-      loadingVideo: false,
-      loading: false,
-      error: false,
-      errorMessage: "",
-      categories: [],
-      videosCategories: [],
-      loadingCategory: false,
-      errorCategory: false,
-      errorMessageCategory: "",
-      selectedCategory: "1",
-    };
-  },
-  mounted() {
-    this.getVideos();
-    this.getVideoCategories();
-    this.setTitlePage("YouTube");
-  },
-  methods: {
-    ...mapActions(["setTitlePage"]),
-    async getVideos() {
-      try {
-        this.loadingVideo = true;
-        const data = await listVideos();
-        data.items.map(async (video) => {
-          const channel = await this.getChannelThumb(video.snippet.channelId);
-          video.channel = channel.items[0];
-          this.videos.push(video);
-        });
-        this.error = false;
-      } catch (error) {
-        this.error = true;
-        this.loadingVideo = false;
-        this.errorMessage = error.response.data.error.message;
-      } finally {
-        this.loadingVideo = false;
-      }
+    name: 'Home',
+    components: {
+        VideoThumbnail,
+        VideoMobileVideoThumbnail,
+        ErrorMessage,
+        Loading,
     },
-    async getVideosByCategories(id) {
-      this.selectedCategory = id;
-      this.videosCategories = [];
-      try {
-        this.loadingCategory = true;
-        const data = await listVideosByCategories(id);
-        data.items.map(async (video) => {
-          const channel = await this.getChannelThumb(video.snippet.channelId);
-          video.channel = channel.items[0];
-          this.videosCategories.push(video);
-        });
-        this.errorCategory = false;
-      } catch (error) {
-        this.errorCategory = true;
-        this.loadingCategory = false;
-        this.errorMessageCategory = error.response.data.error.message;
-      } finally {
-        this.loadingCategory = false;
-      }
+    data() {
+        return {
+            videos: [],
+            loadingVideo: false,
+            loading: false,
+            error: false,
+            errorMessage: '',
+            categories: [],
+            videosCategories: [],
+            loadingCategory: false,
+            errorCategory: false,
+            errorMessageCategory: '',
+            selectedCategory: '1',
+        };
     },
-    getChannelThumb(id) {
-      const channel = listChannels(id);
-      return channel;
+    mounted() {
+        this.getVideos();
+        this.getVideoCategories();
+        this.setTitlePage('YouTube');
     },
-    async getVideoCategories() {
-      try {
-        const data = await listVideoCategories();
-        this.categories = data.items;
-        await this.getVideosByCategories(this.categories[0].id);
-        this.errorCategory = false;
-      } catch (error) {
-        this.errorCategory = true;
-        this.errorMessageCategory = error.response.data.error.message;
-      }
+    methods: {
+        ...mapActions(['setTitlePage']),
+        async getVideos() {
+            try {
+                this.loadingVideo = true;
+                const data = await listVideos();
+                data.items.map(async (video) => {
+                    const channel = await this.getChannelThumb(video.snippet.channelId);
+                    video.channel = channel.items[0];
+                    this.videos.push(video);
+                });
+                this.error = false;
+            } catch (error) {
+                this.error = true;
+                this.loadingVideo = false;
+                this.errorMessage = error.response.data.error.message;
+            } finally {
+                this.loadingVideo = false;
+            }
+        },
+        async getVideosByCategories(id) {
+            this.selectedCategory = id;
+            this.videosCategories = [];
+            try {
+                this.loadingCategory = true;
+                const data = await listVideosByCategories(id);
+                data.items.map(async (video) => {
+                    const channel = await this.getChannelThumb(video.snippet.channelId);
+                    video.channel = channel.items[0];
+                    this.videosCategories.push(video);
+                });
+                this.errorCategory = false;
+            } catch (error) {
+                this.errorCategory = true;
+                this.loadingCategory = false;
+                this.errorMessageCategory = error.response.data.error.message;
+            } finally {
+                this.loadingCategory = false;
+            }
+        },
+        getChannelThumb(id) {
+            const channel = listChannels(id);
+            return channel;
+        },
+        async getVideoCategories() {
+            try {
+                const data = await listVideoCategories();
+                this.categories = data.items;
+                await this.getVideosByCategories(this.categories[0].id);
+                this.errorCategory = false;
+            } catch (error) {
+                this.errorCategory = true;
+                this.errorMessageCategory = error.response.data.error.message;
+            }
+        },
     },
-  },
-  computed: {
-    isMobile() {
-      return this.$store.state.isMobile;
+    computed: {
+        isMobile() {
+            return this.$store.state.isMobile;
+        },
     },
-  },
 };
 </script>
 

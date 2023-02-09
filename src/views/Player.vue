@@ -18,98 +18,98 @@
 
 <script>
 import {
-  getVideo,
-  listChannels,
-  listVideosRecommended,
-} from "@/services/youtube-api.js";
-import Loading from "@/components/Loading.vue";
-import ErrorMessage from "@/components/ErrorMessage.vue";
-import VideoMobileVideoThumbnail from "@/components/VideoMobileVideoThumbnail.vue";
-import VideoPlayer from "@/components/VideoPlayer.vue";
-import VideoRecommended from "@/components/VideoRecommended.vue";
-import { mapActions } from "vuex";
+    getVideo,
+    listChannels,
+    listVideosRecommended,
+} from '@/services/youtube-api.js';
+import Loading from '@/components/Loading.vue';
+import ErrorMessage from '@/components/ErrorMessage.vue';
+import VideoMobileVideoThumbnail from '@/components/VideoMobileVideoThumbnail.vue';
+import VideoPlayer from '@/components/VideoPlayer.vue';
+import VideoRecommended from '@/components/VideoRecommended.vue';
+import { mapActions } from 'vuex';
 export default {
-  name: "Player",
-  components: {
-    VideoPlayer,
-    VideoMobileVideoThumbnail,
-    VideoRecommended,
-    ErrorMessage,
-    Loading
-  },
-  data() {
-    return {
-      video: {},
-      videoRecommended: [],
-      loading: false,
-      error: false,
-      errorMessage: "",
-    };
-  },
-  mounted() {
-    this.getVideoPlayer();
-  },
-  methods: {
-    ...mapActions(["setWatchedHistory", "setTitlePage"]),
-    async getVideoPlayer() {
-      try {
-        this.loading = true;
-        const data = await getVideo(this.$route.query.v);
-        this.video = data.items[0];
-        this.setTitlePage(this.video.snippet.title + " - YouTube");
-        const channel = await this.getChannelThumb(
-          this.video.snippet.channelId
-        );
-        this.video.channel = channel.items[0];
-        this.setHistory(this.video);
-        const dataRecommended = await listVideosRecommended(
-          this.video.snippet.categoryId
-        );
-        dataRecommended.items.map(async (video) => {
-          const channel = await this.getChannelThumb(video.snippet.channelId);
-          video.channel = channel.items[0];
-          this.videoRecommended.push(video);
-        });
-        this.error = false;
-      } catch (error) {
-        this.error = true;
-        this.loading = false;
-        this.errorMessage = error.response.data.error.message;
-      } finally {
-        this.loading = false;
-      }
+    name: 'Player',
+    components: {
+        VideoPlayer,
+        VideoMobileVideoThumbnail,
+        VideoRecommended,
+        ErrorMessage,
+        Loading
     },
-    getChannelThumb(id) {
-      const channel = listChannels(id);
-      return channel;
+    data() {
+        return {
+            video: {},
+            videoRecommended: [],
+            loading: false,
+            error: false,
+            errorMessage: '',
+        };
     },
-    setHistory(video) {
-      const historyVideo = this.$store.state.watchedVideos.find(
-        (element) => element === video.id
-      );
-      if (video.id != historyVideo) {
-        this.setWatchedHistory(video.id);
-      }
+    mounted() {
+        this.getVideoPlayer();
     },
-  },
-  watch: {
-    async query() {
-      const newVideoRecommended = [];
-      this.videoRecommended = newVideoRecommended;
-      await this.getVideoPlayer();
+    methods: {
+        ...mapActions(['setWatchedHistory', 'setTitlePage']),
+        async getVideoPlayer() {
+            try {
+                this.loading = true;
+                const data = await getVideo(this.$route.query.v);
+                this.video = data.items[0];
+                this.setTitlePage(this.video.snippet.title + ' - YouTube');
+                const channel = await this.getChannelThumb(
+                    this.video.snippet.channelId
+                );
+                this.video.channel = channel.items[0];
+                this.setHistory(this.video);
+                const dataRecommended = await listVideosRecommended(
+                    this.video.snippet.categoryId
+                );
+                dataRecommended.items.map(async (video) => {
+                    const channel = await this.getChannelThumb(video.snippet.channelId);
+                    video.channel = channel.items[0];
+                    this.videoRecommended.push(video);
+                });
+                this.error = false;
+            } catch (error) {
+                this.error = true;
+                this.loading = false;
+                this.errorMessage = error.response.data.error.message;
+            } finally {
+                this.loading = false;
+            }
+        },
+        getChannelThumb(id) {
+            const channel = listChannels(id);
+            return channel;
+        },
+        setHistory(video) {
+            const historyVideo = this.$store.state.watchedVideos.find(
+                (element) => element === video.id
+            );
+            if (video.id != historyVideo) {
+                this.setWatchedHistory(video.id);
+            }
+        },
     },
-  },
-  computed: {
-    isMobile() {
-      return this.$store.state.isMobile;
+    watch: {
+        async query() {
+            const newVideoRecommended = [];
+            this.videoRecommended = newVideoRecommended;
+            await this.getVideoPlayer();
+        },
     },
-    query() {
-      return this.$route.query.v;
+    computed: {
+        isMobile() {
+            return this.$store.state.isMobile;
+        },
+        query() {
+            return this.$route.query.v;
+        },
+        checkChanell() {
+            return Object.hasOwn(this.video, 'channel');
+        },
     },
-    checkChanell() {
-      return Object.hasOwn(this.video, "channel");
-    },
-  },
 };
 </script>
 

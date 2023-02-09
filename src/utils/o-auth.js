@@ -1,17 +1,17 @@
-import store from "../store"
-
+import store from '../store'
+/* eslint-disable */
 let GoogleAuth;
 let SCOPE = "https://www.googleapis.com/auth/youtube.upload";
-// eslint-disable-next-line no-unused-vars
+
 export const handleClientLoad = function () {
-  // eslint-disable-next-line no-undef
+
   gapi.load("client:auth2", initClient);
 };
 
 export const initClient = function () {
   let discoveryUrl = "https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest";
 
-  // eslint-disable-next-line no-undef
+
   gapi.client
     .init({
       apiKey: "AIzaSyBVT81d3-k_-QQ_-7ARIJpyJV7sd7nhk7I",
@@ -21,7 +21,7 @@ export const initClient = function () {
       plugin_name: "chat",
     })
     .then(function () {
-      // eslint-disable-next-line no-undef
+
       GoogleAuth = gapi.auth2.getAuthInstance();
 
       GoogleAuth.isSignedIn.listen(updateSigninStatus);

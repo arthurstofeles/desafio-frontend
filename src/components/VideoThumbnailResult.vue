@@ -31,23 +31,23 @@
 </template>
 
 <script>
-import { truncateString } from "@/utils/filters.js";
+import { truncateString } from '@/utils/filters.js';
 export default {
-  name: "VideoThumbnailResult",
-  props: {
-    videos: {
-      type: Array,
+    name: 'VideoThumbnailResult',
+    props: {
+        videos: {
+            type: Array,
+        },
     },
-  },
-  methods: {
-    truncateString,
-    goToPlayer(id) {
-      this.$router.push({
-        name: "Player",
-        query: { v: id },
-      });
+    methods: {
+        truncateString,
+        goToPlayer(id) {
+            this.$router.push({
+                name: 'Player',
+                query: { v: id },
+            });
+        },
     },
-  },
 };
 </script>
 

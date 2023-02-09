@@ -29,19 +29,19 @@
 
 <script>
 export default {
-  name: "VideoMobileVideoThumbnail",
-  props: {
-    videos: {
-      type: Array,
+    name: 'VideoMobileVideoThumbnail',
+    props: {
+        videos: {
+            type: Array,
+        },
     },
-  },
-  methods: {
-    goToPlayer(id) {
-      this.$router.push({
-        name: "Player",
-        query: { v: id },
-      });
+    methods: {
+        goToPlayer(id) {
+            this.$router.push({
+                name: 'Player',
+                query: { v: id },
+            });
+        },
     },
-  },
 };
 </script>

@@ -30,95 +30,95 @@
 </template>
 
 <script>
-import Loading from "@/components/Loading.vue";
-import ErrorMessage from "@/components/ErrorMessage.vue";
-import VideoMobileVideoThumbnail from "@/components/VideoMobileVideoThumbnail.vue";
-import VideoThumbnailResult from "@/components/VideoThumbnailResult.vue";
-import { listSearch, listChannels } from "@/services/youtube-api.js";
-import { mapActions } from "vuex";
+import Loading from '@/components/Loading.vue';
+import ErrorMessage from '@/components/ErrorMessage.vue';
+import VideoMobileVideoThumbnail from '@/components/VideoMobileVideoThumbnail.vue';
+import VideoThumbnailResult from '@/components/VideoThumbnailResult.vue';
+import { listSearch, listChannels } from '@/services/youtube-api.js';
+import { mapActions } from 'vuex';
 export default {
-  name: "SearchResult",
-  components: { VideoThumbnailResult, VideoMobileVideoThumbnail, ErrorMessage, Loading },
-  data() {
-    return {
-      search: "",
-      videos: [],
-      nextPageToken: "",
-      loading: false,
-      loadingNext: false,
-      error: false,
-      errorMessage: "",
-    };
-  },
-  mounted() {
-    this.getVideos(this.$route.query.search_query);
-  },
-  methods: {
-    ...mapActions(["setTitlePage"]),
-    async getVideos(search) {
-      try {
-        this.loading = true;
-        const data = await listSearch(search);
-        this.nextPageToken = data.nextPageToken;
-        data.items.map(async (video) => {
-          const channel = await this.getChannelThumb(video.snippet.channelId);
-          video.channel = channel.items[0];
-          this.videos.push(video);
-        });
-        this.error = false;
-      } catch (error) {
-        this.error = true;
-        this.loading = false;
-        this.errorMessage = error.response.data.error.message;
-      } finally {
-        this.loading = false;
-      }
+    name: 'SearchResult',
+    components: { VideoThumbnailResult, VideoMobileVideoThumbnail, ErrorMessage, Loading },
+    data() {
+        return {
+            search: '',
+            videos: [],
+            nextPageToken: '',
+            loading: false,
+            loadingNext: false,
+            error: false,
+            errorMessage: '',
+        };
     },
-    async getNextVideos(search, token) {
-      try {
-        this.loadingNext = true
-        const data = await listSearch(search, token);
-        this.nextPageToken = data.nextPageToken;
-        data.items.map(async (video) => {
-          const idVideo = this.videos.find(
-            (element) => element.id.videoId === video.id.videoId
-          );
-          if (idVideo === undefined) {
-            const channel = await this.getChannelThumb(video.snippet.channelId);
-            video.channel = channel.items[0];
-            this.videos.push(video);
-          }
-        });
-        this.error = false;
-      } catch (error) {
-        this.error = true;
-        this.loadingNext = false;
-        this.errorMessage = error.response.data.error.message;
-      } finally {
-        this.loadingNext = false;
-      }
+    mounted() {
+        this.getVideos(this.$route.query.search_query);
     },
-    getChannelThumb(id) {
-      const channel = listChannels(id);
-      return channel;
+    methods: {
+        ...mapActions(['setTitlePage']),
+        async getVideos(search) {
+            try {
+                this.loading = true;
+                const data = await listSearch(search);
+                this.nextPageToken = data.nextPageToken;
+                data.items.map(async (video) => {
+                    const channel = await this.getChannelThumb(video.snippet.channelId);
+                    video.channel = channel.items[0];
+                    this.videos.push(video);
+                });
+                this.error = false;
+            } catch (error) {
+                this.error = true;
+                this.loading = false;
+                this.errorMessage = error.response.data.error.message;
+            } finally {
+                this.loading = false;
+            }
+        },
+        async getNextVideos(search, token) {
+            try {
+                this.loadingNext = true
+                const data = await listSearch(search, token);
+                this.nextPageToken = data.nextPageToken;
+                data.items.map(async (video) => {
+                    const idVideo = this.videos.find(
+                        (element) => element.id.videoId === video.id.videoId
+                    );
+                    if (idVideo === undefined) {
+                        const channel = await this.getChannelThumb(video.snippet.channelId);
+                        video.channel = channel.items[0];
+                        this.videos.push(video);
+                    }
+                });
+                this.error = false;
+            } catch (error) {
+                this.error = true;
+                this.loadingNext = false;
+                this.errorMessage = error.response.data.error.message;
+            } finally {
+                this.loadingNext = false;
+            }
+        },
+        getChannelThumb(id) {
+            const channel = listChannels(id);
+            return channel;
+        },
     },
-  },
-  watch: {
-    async query() {
-      const newVideos = [];
-      this.videos = newVideos;
-      await this.getVideos(this.$route.query.search_query);
-      await this.setTitlePage(this.$route.query.search_query + " - YouTube");
+    watch: {
+        async query() {
+            const newVideos = [];
+            this.videos = newVideos;
+            await this.getVideos(this.$route.query.search_query);
+            await this.setTitlePage(this.$route.query.search_query + ' - YouTube');
+        },
     },
-  },
-  computed: {
-    query() {
-      return this.$route.query.search_query;
+    computed: {
+        query() {
+            return this.$route.query.search_query;
+        },
+        isMobile() {
+            return this.$store.state.isMobile;
+        },
     },
-    isMobile() {
-      return this.$store.state.isMobile;
-    },
-  },
 };
 </script>
 

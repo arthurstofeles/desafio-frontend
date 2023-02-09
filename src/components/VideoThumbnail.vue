@@ -35,24 +35,24 @@
 </template>
 
 <script>
-import { truncateString, formatCountSubscribed } from "@/utils/filters.js";
+import { truncateString, formatCountSubscribed } from '@/utils/filters.js';
 export default {
-  name: "VideoThumbnail",
-  props: {
-    videos: {
-      type: Array,
+    name: 'VideoThumbnail',
+    props: {
+        videos: {
+            type: Array,
+        },
     },
-  },
-  methods: {
-    truncateString,
-    formatCountSubscribed,
-    goToPlayer(id) {
-      this.$router.push({
-        name: "Player",
-        query: { v: id },
-      });
+    methods: {
+        truncateString,
+        formatCountSubscribed,
+        goToPlayer(id) {
+            this.$router.push({
+                name: 'Player',
+                query: { v: id },
+            });
+        },
     },
-  },
 };
 </script>
 

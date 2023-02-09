@@ -19,25 +19,25 @@
 
 <script>
 export default {
-  name: "BottomBarNavegation",
-  data() {
-    return {
-      items: [
-        { title: "Home", icon: "mdi-home", route: "Home" },
-        { title: "Histórico", icon: "mdi-history", route: "History" },
-      ],
-    };
-  },
-  methods: {
-    goTo(route) {
-      if (this.$route.name != route) {
-        this.$router.push({ name: route });
-      }
+    name: 'BottomBarNavegation',
+    data() {
+        return {
+            items: [
+                { title: 'Home', icon: 'mdi-home', route: 'Home' },
+                { title: 'Histórico', icon: 'mdi-history', route: 'History' },
+            ],
+        };
     },
-    checkRoute(name) {
-      return name == this.$route.name ? "yt_black" : "yt_gray";
+    methods: {
+        goTo(route) {
+            if (this.$route.name != route) {
+                this.$router.push({ name: route });
+            }
+        },
+        checkRoute(name) {
+            return name == this.$route.name ? 'yt_black' : 'yt_gray';
+        },
     },
-  },
 };
 </script>
 
