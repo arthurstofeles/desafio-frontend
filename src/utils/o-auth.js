@@ -1,7 +1,7 @@
 import store from '../store'
 /* eslint-disable */
 let GoogleAuth;
-let SCOPE = "https://www.googleapis.com/auth/youtube.upload";
+let SCOPE = process.env.VUE_APP_YOUTUBE_OAUTH;
 
 export const handleClientLoad = function () {
 
@@ -9,13 +9,13 @@ export const handleClientLoad = function () {
 };
 
 export const initClient = function () {
-  let discoveryUrl = "https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest";
+  let discoveryUrl = process.env.VUE_APP_YOUTUBE_DISCOVERY_URL;
 
 
   gapi.client
     .init({
-      apiKey: "AIzaSyBVT81d3-k_-QQ_-7ARIJpyJV7sd7nhk7I",
-      clientId: "442076374255-nueuper3ov95im5oiohrk897274nb9k8.apps.googleusercontent.com",
+      apiKey: process.env.VUE_APP_YOUTUBE_API_KEY,
+      clientId: process.env.VUE_APP_YOUTUBE_CLIENT_ID,
       discoveryDocs: [discoveryUrl],
       scope: SCOPE,
       plugin_name: "chat",
